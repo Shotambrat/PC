@@ -6,11 +6,30 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    screens: {
+      'sm': '320px',
+
+      'md': '360px',
+
+      'mdx': '460px',
+
+      'mdl': '522px',
+
+      'slg': '750px',
+
+      'lg': '900px',
+
+      'xl': '1000px',
+
+      '3xl': '1440px',
+    },
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      colors: {
+        main: "#2E4C44",
+        second: "#E0B77C"
+      },
+      height: {
+        'screen-minus-80': 'calc(100vh - 80px)',
       },
     },
   },
