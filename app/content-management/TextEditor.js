@@ -1,8 +1,9 @@
+// app/content-management/TextEditor.js
 "use client";
 
 import { useState } from "react";
 import { Input, Button, Form, message, Modal } from "antd";
-import { updateContentBySlug } from "@/app/_utils/contentService";
+import { updateContentBySlug } from "@/app/_utils/сontentServiсe";
 
 export default function TextEditor({ slug, initialContent }) {
   const [text, setText] = useState(initialContent);

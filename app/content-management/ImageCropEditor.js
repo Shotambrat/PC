@@ -1,10 +1,11 @@
+// app/content-management/ImageCropEditor.js
 "use client";
 
 import { useState } from "react";
 import { Upload, Button, Form, message, Modal, Progress } from "antd";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import { updateContentBySlug } from "@/app/_utils/contentService";
+import { updateContentBySlug } from "@/app/_utils/сontentServiсe";
 import { UploadOutlined } from "@ant-design/icons";
 import imageCompression from "browser-image-compression";
 

@@ -36,16 +36,3 @@ export async function PUT(req, { params }) {
     return NextResponse.json({ message: 'Error updating content' }, { status: 500 });
   }
 }
-
-export async function DELETE(req, { params }) {
-  try {
-    const client = await clientPromise;
-    const db = client.db();
-
-    await db.collection('content').deleteOne({ slug: params.slug });
-
-    return NextResponse.json({ message: 'Content deleted' }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json({ message: 'Error deleting content' }, { status: 500 });
-  }
-}

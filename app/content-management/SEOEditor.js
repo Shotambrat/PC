@@ -1,3 +1,4 @@
+// app/content-management/SEOEditor.js
 "use client";
 
 import { useState, useEffect } from "react";
@@ -5,7 +6,7 @@ import { Input, Button, Form, message } from "antd";
 import {
   updateContentBySlug,
   fetchContentBySlug,
-} from "@/app/_utils/contentService";
+} from "@/app/_utils/сontentServiсe";
 
 export default function SEOEditor({ slug }) {
   const [seoData, setSeoData] = useState({
@@ -66,14 +67,14 @@ export default function SEOEditor({ slug }) {
 
   const handleReset = () => {
     setSeoData({
-      title: initialSEOData.title || "",
-      description: initialSEOData.description || "",
-      keywords: initialSEOData.keywords || "",
-      icon: initialSEOData.icon || "",
-      canonical: initialSEOData.canonical || "",
-      ogTitle: initialSEOData.ogTitle || "",
-      ogDescription: initialSEOData.ogDescription || "",
-      ogImage: initialSEOData.ogImage || "",
+      title: seoData.title || "",
+      description: seoData.description || "",
+      keywords: seoData.keywords || "",
+      icon: seoData.icon || "",
+      canonical: seoData.canonical || "",
+      ogTitle: seoData.ogTitle || "",
+      ogDescription: seoData.ogDescription || "",
+      ogImage: seoData.ogImage || "",
     });
     message.info("SEO data has been reset.");
   };

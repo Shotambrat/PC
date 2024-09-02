@@ -1,6 +1,9 @@
-import { useEffect, useState } from "react";
-import { Table, Button, Select, message } from "antd";
-import axios from "axios";
+// app/admin/users/UserManagementPage.js
+"use client"
+
+import { useEffect, useState } from 'react';
+import { Table, Button, Select, message } from 'antd';
+import axios from 'axios';
 
 const { Option } = Select;
 
@@ -11,10 +14,10 @@ export default function UserManagementPage() {
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const response = await axios.get("/api/users");
+        const response = await axios.get('/api/users');
         setUsers(response.data);
       } catch (error) {
-        message.error("Failed to load users");
+        message.error('Failed to load users');
       }
     }
     fetchUsers();
@@ -24,32 +27,47 @@ export default function UserManagementPage() {
     setLoading(true);
     try {
       await axios.put(`/api/users/${userId}`, { role: newRole });
-      message.success("User role updated successfully");
+      message.success('User role updated successfully');
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user._id === userId ? { ...user, role: newRole } : user
+        )
+      );
     } catch (error) {
-      message.error("Failed to update user role");
+      message.error('Failed to update user role');
     } finally {
       setLoading(false);
     }
   };
 
+  const handleDeleteUser = async (userId) => {
+    try {
+      await axios.delete(`/api/users/${userId}`);
+      setUsers(users.filter(user => user._id !== userId));
+      message.success('User deleted successfully');
+    } catch (error) {
+      message.error('Failed to delete user');
+    }
+  };
+
   const columns = [
     {
-      title: "Username",
-      dataIndex: "username",
-      key: "username",
+      title: 'Username',
+      dataIndex: 'username',
+      key: 'username',
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
     },
     {
-      title: "Role",
-      key: "role",
+      title: 'Role',
+      key: 'role',
       render: (text, record) => (
         <Select
           defaultValue={record.role}
-          onChange={(value) => handleRoleChange(record.id, value)}
+          onChange={(value) => handleRoleChange(record._id, value)}
           style={{ width: 120 }}
         >
           <Option value="user">User</Option>
@@ -59,12 +77,21 @@ export default function UserManagementPage() {
         </Select>
       ),
     },
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (_, record) => (
+        <Button type="danger" onClick={() => handleDeleteUser(record._id)}>
+          Delete
+        </Button>
+      ),
+    },
   ];
 
   return (
     <div>
       <h1>User Management</h1>
-      <Table columns={columns} dataSource={users} rowKey="id" loading={loading} />
+      <Table columns={columns} dataSource={users} rowKey="_id" loading={loading} />
     </div>
   );
 }

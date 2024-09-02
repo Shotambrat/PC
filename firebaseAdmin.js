@@ -4,7 +4,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 
 const serviceAccount = JSON.parse(
-  readFileSync(join(process.cwd(), '/secrets/premium-concept-cd4f5-firebase-adminsdk-q35ef-daffaee7d8.json'), 'utf-8')
+  readFileSync(join(process.cwd(), '/secrets/premium-concept-sdk.json'), 'utf-8')
 );
 
 if (!admin.apps.length) {

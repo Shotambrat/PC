@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "@/public/images/logo.png";
@@ -7,13 +8,30 @@ import location from "@/public/svg/location-pin-svgrepo-com.svg";
 import phone from "@/public/svg/phone-svgrepo-com.svg";
 import search from "@/public/svg/search-alt-2-svgrepo-com.svg";
 import Carousel from "./Carousel";
+import axios from "axios";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [menuItems, setMenuItems] = useState([]);
+
+  console.log(menuItems)
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  useEffect(() => {
+    async function fetchMenuItems() {
+      try {
+        const response = await axios.get('/api/content/header-navigation');
+        setMenuItems(response.data.links || []);
+      } catch (error) {
+        console.error("Failed to load menu items", error);
+      }
+    }
+
+    fetchMenuItems();
+  }, []);
 
   return (
     <div className="w-full relative">
@@ -32,17 +50,13 @@ export default function Header() {
               />
             </Link>
           </div>
-          <nav className="hidden xl:flex w-full max-w-[900px] text-white">
+          <nav className="hidden xld:flex w-full max-w-[900px] text-white">
             <ul className="flex w-full gap-2 justify-between">
-              <li className="uppercase cursor-pointer">Главная</li>
-              <li className="uppercase cursor-pointer whitespace-nowrap">
-                О Компании
-              </li>
-              <li className="uppercase cursor-pointer">Продукция</li>
-              <li className="uppercase cursor-pointer">Портфолио</li>
-              <li className="uppercase cursor-pointer">События</li>
-              <li className="uppercase cursor-pointer">Статьи</li>
-              <li className="uppercase cursor-pointer">Контакты</li>
+              {menuItems.map((item) => (
+                <li key={item.slug} className="uppercase text-lg whitespace-nowrap hover:text-second transition-all duration-150 cursor-pointer">
+                  <Link href={item.url}>{item.name}</Link>
+                </li>
+              ))}
             </ul>
           </nav>
 
@@ -86,7 +100,7 @@ export default function Header() {
                 height={50}
               />
             </Link>
-            <div className="xl:hidden flex items-center">
+            <div className="xld:hidden flex items-center">
               <button
                 className="text-white focus:outline-none"
                 onClick={toggleMenu}
@@ -137,43 +151,41 @@ export default function Header() {
             ></path>
           </svg>
         </button>
-        <nav className="mt-16 p-4">
-        <div className="h-[70px] flex gap-4 items-center">
-          <Link
-            href=""
-            className="relative h-12 w-12 p-2 rounded-full border-2 border-white"
-          >
-            <Image
-              src={search}
-              alt="Search Icon"
-              className="h-full w-full object-contain"
-              quality={100}
-              width={50}
-              height={50}
-            />
-          </Link>
-          <Link
-            href={"/locations"}
-            className="h-12 w-12 p-2 rounded-full border-2 border-white"
-          >
-            <Image
-              src={location}
-              alt="Location Icon"
-              className="h-full w-full object-contain"
-              quality={100}
-              width={50}
-              height={50}
-            />
-          </Link>
-        </div>
-          <ul className="flex flex-col gap-6">
-            <li className="uppercase cursor-pointer">Главная</li>
-            <li className="uppercase cursor-pointer">О Компании</li>
-            <li className="uppercase cursor-pointer">Продукция</li>
-            <li className="uppercase cursor-pointer">Портфолио</li>
-            <li className="uppercase cursor-pointer">События</li>
-            <li className="uppercase cursor-pointer">Статьи</li>
-            <li className="uppercase cursor-pointer">Контакты</li>
+        <nav className="p-4 top-0">
+          <div className="h-[70px] flex gap-4 items-center">
+            <Link
+              href=""
+              className="relative h-12 w-12 p-2 rounded-full border-2 border-white"
+            >
+              <Image
+                src={search}
+                alt="Search Icon"
+                className="h-full w-full object-contain"
+                quality={100}
+                width={50}
+                height={50}
+              />
+            </Link>
+            <Link
+              href={"/locations"}
+              className="h-12 w-12 p-2 rounded-full border-2 border-white"
+            >
+              <Image
+                src={location}
+                alt="Location Icon"
+                className="h-full w-full object-contain"
+                quality={100}
+                width={50}
+                height={50}
+              />
+            </Link>
+          </div>
+          <ul className="flex flex-col gap-6 mt-8">
+            {menuItems.map((item) => (
+              <li key={item.slug} className="uppercase cursor-pointer">
+                <Link href={item.url}>{item.name}</Link>
+              </li>
+            ))}
           </ul>
         </nav>
       </div>
